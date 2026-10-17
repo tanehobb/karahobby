@@ -1,0 +1,16 @@
+{
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  "id": "did:web:karahobby.com",
+  "alsoKnownAs": [
+    "https://karahobby.com/",
+    "https://www.notliketheothergolddiggers.com/",
+    "https://www.tiktok.com/@americulta",
+    "https://www.instagram.com/karahobby",
+    "https://www.youtube.com/@Notliketheothergolddiggers",
+    "https://github.com/tanehobb",
+    "https://huggingface.co/tanehobb",
+    "https://archive.org/details/kara-hobby-essays",
+    "at://did:plc:7fcehcj3pwnsioqqnb22hogr"
+  ],
+  "service": [{"id": "did:web:karahobby.com#site", "type": "LinkedDomains", "serviceEndpoint": {"origins": ["https://karahobby.com", "https://www.notliketheothergolddiggers.com"]}}]
+}
