@@ -1,4 +1,22 @@
+# Content signals (https://contentsignals.org): yes to search and to AI answers that cite this page.
+Content-Signal: search=yes, ai-input=yes
+
 User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 Sitemap: https://karahobby.com/sitemap.xml
