@@ -1,0 +1,27 @@
+name: entity-watch
+# Weekly: does Google have a Knowledge Graph entity for Kara Hobby yet? Is karahobby.com in Common Crawl? Logs to watch/log.md
+on:
+  schedule:
+    - cron: "41 14 * * 1"
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Google entity + Common Crawl
+        run: |
+          mkdir -p watch
+          D=$(date -u +%F)
+          KG=$(curl -s "https://trends.google.com/trends/api/autocomplete/Kara%20Hobby?hl=en-US" | sed '1s/^)]}.,*//' | python3 -c "import sys,json;t=sys.stdin.read();t=t[t.find('{'):];d=json.loads(t) if t else {};print('; '.join(f\"{x.get('title')} | {x.get('type')} | {x.get('mid')}\" for x in d.get('default',{}).get('topics',[]) if 'hobby' in x.get('title','').lower()) or 'none')" 2>/dev/null || echo error)
+          CC=$(curl -s https://index.commoncrawl.org/collinfo.json | python3 -c "import sys,json;print(json.load(sys.stdin)[0]['id'])" 2>/dev/null || echo unknown)
+          N1=$(curl -s -m 60 "https://index.commoncrawl.org/$CC-index?url=karahobby.com/*&output=json" | grep -c '"url"' || true)
+          N2=$(curl -s -m 60 "https://index.commoncrawl.org/$CC-index?url=www.notliketheothergolddiggers.com/*&output=json" | grep -c '"url"' || true)
+          echo "- $D | Google entity: $KG | Common Crawl $CC: karahobby.com=$N1, notliketheothergolddiggers.com=$N2" >> watch/log.md
+          tail -3 watch/log.md
+      - name: Commit log
+        run: |
+          git config user.name "entity-watch"; git config user.email "actions@users.noreply.github.com"
+          git add watch/log.md; git commit -m "entity-watch $(date -u +%F)" || true; git push || true
