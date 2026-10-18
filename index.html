@@ -206,5 +206,13 @@ nav a:hover{color:var(--hot)}
     <a href="https://www.instagram.com/karahobby">Instagram</a>
   </nav>
 </main>
+<!-- new-video-router: for 48h after a new TikTok posts, profile links open the newest video (2026-10-17) -->
+<script>
+(function(){fetch("https://karahobby.com/latest-tiktok.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+if(!d||!/^\d{19}$/.test(d.id))return;var t=Number(BigInt(d.id)>>32n);if(Date.now()/1000-t>172800)return;
+var v="https://www.tiktok.com/@americulta/video/"+d.id;
+document.querySelectorAll('a[href*="tiktok.com/@americulta"]').forEach(function(a){if(!/\/video\//.test(a.href))a.href=v;});
+}).catch(function(){});})();
+</script>
 </body>
 </html>
